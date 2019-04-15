@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Header from './components/Header';
 import SearchBar from './components/SearchBar';
@@ -9,6 +8,7 @@ import NewsDetails from './components/NewsDetails';
 
 import News from './data/News.json'
 import options from './data/NavBarOptions.json'
+import Footer from './components/Footer';
 
 
 class App extends Component {
@@ -23,7 +23,7 @@ class App extends Component {
   render() {
     if (this.state.infoStatus)
       return (
-        <NewsDetails data={this.state.data} />
+        <NewsDetails data={this.state.data} moreInfo={(status) => { this.moreInfo(null, status) }} />
       )
 
     return (
@@ -31,16 +31,22 @@ class App extends Component {
         <Header title="Noticias" />
         <SearchBar />
         <NavBar options={options} />
-        {News.map(news => {
-          return (
-            <Card
-              info={news.info}
-              moreInfo={(status) => { this.moreInfo(news, status) }}
-              photo={news.photo}
-              title={news.title}
-            />
-          )
-        })}
+        <div className="Cards-container">
+          {News.map((news, i) => {
+            return (
+              <Card
+                info={news.info}
+                key={`news-${i}`}
+                moreInfo={(status) => { this.moreInfo(news, status) }}
+                photo={news.photo}
+                title={news.title}
+              />
+            )
+          })}
+        </div>
+
+        <Footer />
+
       </div>
     );
   }
